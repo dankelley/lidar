@@ -1,8 +1,10 @@
 # https://nsgi.novascotia.ca/datalocator/elevation/
-name <- "citadel"
-L <- 600 # extent in m
+
+name <- "ppp"
+L <- 1500 # extent in m
 d <- "~/Downloads/1044600063500_201901_RAW_DEM"
-centre <- data.frame(ID = 1, X = -63.5804, Y =  44.6475)
+centre <- data.frame(ID = 1, Y = 44.623, X = -63.568)
+# 44.62316216155447, -63.56828742367941
 width <- 7 # same for height
 
 # no need to edit below this line
@@ -34,33 +36,35 @@ look <- pin(c(C[1] - L / 2, C[1] + L / 2, C[2] - L / 2, C[2] + L / 2))
 look
 H <- h[look[1]:look[2], look[3]:look[4]]
 
-res <- 2 * dim(H)[1] / 7
+res <- as.integer(3 * dim(H)[1] / 7)
 
-zlim <- c(20, 70)
-#zlim <- "histogram"
+# Good starting point (ignore the above)
+# zlim <- 40 + c(-10, 10)
+zlim <- c(0, max(H, na.rm = TRUE))
 
 # Turbo colourscheme (not perceptive, but it reveals features quite well)
 png(paste0("lidar_", name, "_turbo.png"),
-    width = width, height = 6.6/7*width, unit = "in", res = res
+    width = width, height = 6.6 / 7 * width, unit = "in", res = res
 )
 imagep(H,
     asp = 1, col = oceColorsTurbo, decimate = FALSE,
     zlim = zlim,
     drawTriangles = TRUE,
 )
-#points(L / 2, L / 2, pch = 1, lwd = 1, cex = 2)
+# points(L / 2, L / 2, pch = 1, lwd = 1, cex = 2)
 mtext(label)
 dev.off()
 
+
 # Viridis colourscheme
 png(paste0("lidar_", name, ".png"),
-    width = width, height = 6.6/7*width, unit = "in", res = res
+    width = width, height = 6.6 / 7 * width, unit = "in", res = res
 )
 imagep(H,
     asp = 1, decimate = FALSE,
     zlim = zlim,
     drawTriangles = TRUE
 )
-#points(L / 2, L / 2, pch = 1, lwd = 1, cex = 2)
+# points(L / 2, L / 2, pch = 1, lwd = 1, cex = 2)
 mtext(label)
 dev.off()
